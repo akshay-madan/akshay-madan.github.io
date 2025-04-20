@@ -29,6 +29,7 @@
       margin: 0;
       background-color: var(--bg-color);
       color: var(--text-color);
+      padding-bottom: 60px; /* space for footer */
     }
     nav {
       background-color: var(--nav-bg);
@@ -47,8 +48,8 @@
     #theme-icon {
       margin-left: 20px;
       cursor: pointer;
-      width: 18px;
-      height: 18px;
+      width: 45px;
+      height: 45px;
     }
     .container {
       max-width: 960px;
@@ -66,6 +67,7 @@
       line-height: 1.2;
     }
     .profile p {
+      font-size: 16px;
       font-weight: 300;
       line-height: 1.6;
       margin: 10px 0;
@@ -75,9 +77,8 @@
       display: inline-block;
     }
     .social-icons img {
-      width: 20px;
-      height: 20px;
-      vertical-align: middle;
+      width: 50px;
+      height: 50px;
     }
     .photo {
       flex: 1;
@@ -98,20 +99,23 @@
       margin-bottom: 30px;
       padding-bottom: 10px;
       border-bottom: 1px solid var(--border-color);
+      font-size: 16px;
+      line-height: 1.6;
     }
-    .paper-title { font-weight: 700; font-size: 16px; }
-    .paper-authors, .paper-venue { font-size: 14px; }
+    .paper-title { font-weight: 700; }
+    .paper-authors, .paper-venue { font-weight: 400; }
     .paper-venue { font-style: italic; margin: 5px 0 8px; }
-    .paper-buttons a {
-      display: inline-block;
-      padding: 4px 10px;
-      border: 1px solid var(--border-color);
-      color: var(--text-color);
-      text-decoration: none;
-      font-size: 13px;
-      margin-right: 10px;
+    .paper-buttons a img {
+      width: 50px;
+      height: 50px;
+      vertical-align: middle;
     }
     footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: var(--nav-bg);
       text-align: center;
       padding: 10px;
       font-size: 12px;
@@ -144,7 +148,7 @@
     <h2>Selected publications</h2>
     <div id="publications-list">Loading publications...</div>
   </section>
-  <footer>© 2025 Akshay Madan.</footer>
+  <footer>© 2025 Akshay Madan. Built manually and hosted on GitHub Pages.</footer>
   <script>
     // Theme toggle
     const themeIcon = document.getElementById('theme-icon');
@@ -178,13 +182,14 @@
           const authors = getField('author');
           const year = getField('year');
           const venue = getField('journal') || getField('booktitle');
+          const url = getField('url');
           if (title && authors) {
             list.innerHTML += `
               <div class="paper">
                 <div class="paper-title">${title}</div>
                 <div class="paper-authors">${authors}</div>
                 <div class="paper-venue">${venue ? venue + ', ' : ''}${year}</div>
-                <div class="paper-buttons"><a href="${file.download_url}" target="_blank">BIB</a></div>
+                <div class="paper-buttons">${url ? `<a href="${url}" target="_blank"><img src="icons/webpage light.png" alt="Webpage"></a>` : ''}</div>
               </div>`;
           }
         }
