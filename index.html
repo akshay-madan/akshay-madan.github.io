@@ -123,8 +123,8 @@
     async function listBibFiles() {
       const list = document.getElementById('publications-list'); list.innerHTML = '';
       try {
-        const user = 'YOUR_USERNAME';
-        const repo = 'YOUR_REPO';
+        const user = 'akshay-madan';
+        const repo = 'akshay-madan.github.io';
         const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/publications`;
         const res = await fetch(apiUrl);
         if (!res.ok) throw new Error();
