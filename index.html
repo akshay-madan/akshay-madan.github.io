@@ -7,6 +7,7 @@
   <link rel="icon" href="icon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
+    /* Theme variables */
     :root {
       --bg-color: #ffffff;
       --text-color: #1e1e1e;
@@ -23,7 +24,12 @@
       --link-color: #00bcd4;
       --border-color: #444;
     }
-    * { box-sizing: border-box; }
+
+    /* Transitions */
+    * {
+      box-sizing: border-box;
+      transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
+    }
     body {
       font-family: 'Roboto', sans-serif;
       margin: 0;
@@ -90,11 +96,16 @@
       object-fit: cover;
       border-radius: 50%;
     }
+    /* Section separator */
     hr {
+      width: 960px;
+      max-width: calc(100% - 40px);
+      margin: 60px auto 40px;
       border: none;
-      border-top: 1px solid var(--border-color);
-      margin: 60px 0 40px;
+      border-top: 3px double var(--border-color);
+      transition: border-color 0.5s ease;
     }
+    /* Publications section */
     #publications {
       max-width: 960px;
       margin: 0 auto;
@@ -111,8 +122,15 @@
       font-size: 16px;
       line-height: 1.6;
     }
-    .paper-title { font-weight: 700; font-size: 18px; margin-bottom: 5px; }
-    .paper-authors, .paper-venue { font-weight: 400; margin: 5px 0; }
+    .paper-title {
+      font-weight: 700;
+      font-size: 22px; /* Larger titles */
+      margin-bottom: 5px;
+    }
+    .paper-authors, .paper-venue {
+      font-weight: 400;
+      margin: 5px 0;
+    }
     .paper-venue { font-style: italic; }
     .paper-buttons img {
       width: 40px;
@@ -139,6 +157,7 @@
     <a href="Akshay_Madan_CV.pdf" download>CV</a>
     <img id="theme-icon" src="icons/moon dark.png" alt="Toggle theme">
   </nav>
+
   <div class="container">
     <div class="profile">
       <h1><strong>Akshay</strong> Madan</h1>
@@ -153,12 +172,16 @@
       <img src="photo.jpg" alt="Akshay Madan">
     </div>
   </div>
+
   <hr>
+
   <section id="publications">
     <h2>Publications</h2>
     <div id="publications-list">Loading publications...</div>
   </section>
+
   <footer>© 2025 Akshay Madan. Built manually and hosted on GitHub Pages.</footer>
+
   <script>
     // Theme toggle
     const themeIcon = document.getElementById('theme-icon');
@@ -172,9 +195,11 @@
       linkedinIcon.src = dark ? 'icons/linkedin dark.png' : 'icons/linkedin light.png';
       scholarIcon.src = dark ? 'icons/scholar dark.png' : 'icons/scholar light.png';
     });
+
     // Load bib files via GitHub API
     async function listBibFiles() {
-      const list = document.getElementById('publications-list'); list.innerHTML = '';
+      const list = document.getElementById('publications-list');
+      list.innerHTML = '';
       try {
         const user = 'akshay-madan';
         const repo = 'akshay-madan.github.io';
@@ -182,7 +207,11 @@
         const res = await fetch(apiUrl);
         if (!res.ok) throw new Error();
         const files = await res.json();
-        const bibFiles = files.filter(f => f.name.endsWith('.bib')).sort((a,b)=> b.name.localeCompare(a.name));
+        // Case-insensitive .bib and reverse order
+        const bibFiles = files
+          .filter(f => f.name.toLowerCase().endsWith('.bib'))
+          .sort((a, b) => b.name.localeCompare(a.name));
+
         for (const file of bibFiles) {
           const bibRes = await fetch(file.download_url);
           const content = await bibRes.text();
@@ -193,6 +222,7 @@
           const year = getField('year');
           const venue = getField('journal') || getField('booktitle');
           const url = getField('url');
+
           if (title && authors) {
             list.innerHTML += `
               <div class="paper">
