@@ -44,10 +44,11 @@
       text-decoration: none;
     }
     nav a:hover { color: var(--hover-color); }
-    #toggle-theme {
+    #theme-icon {
       margin-left: 20px;
       cursor: pointer;
-      font-size: 18px;
+      width: 18px;
+      height: 18px;
     }
     .container {
       max-width: 960px;
@@ -69,24 +70,22 @@
       line-height: 1.6;
       margin: 10px 0;
     }
-    .profile a {
-      color: var(--link-color);
-      text-decoration: none;
-    }
     .social-icons a {
       margin-right: 15px;
-      color: var(--text-color);
-      font-size: 18px;
-      text-decoration: none;
+      display: inline-block;
     }
-    .social-icons a:hover { color: var(--hover-color); }
+    .social-icons img {
+      width: 20px;
+      height: 20px;
+      vertical-align: middle;
+    }
     .photo {
       flex: 1;
       text-align: center;
     }
     .photo img {
-      width: 220px;
-      height: 220px;
+      width: 240px;
+      height: 240px;
       object-fit: cover;
       border-radius: 50%;
     }
@@ -124,17 +123,17 @@
   <nav>
     <a href="#">About</a>
     <a href="#publications">Publications</a>
-    <a href="Akshay_Madan_CV.pdf" download>Resume</a>
-    <span id="toggle-theme" title="Toggle light/dark">🌙</span>
+    <a href="Akshay_Madan_CV.pdf" download>CV</a>
+    <img id="theme-icon" src="icons/moon dark.png" alt="Toggle theme">
   </nav>
   <div class="container">
     <div class="profile">
       <h1><strong>Akshay</strong> Madan</h1>
       <p>I am a Generative AI researcher with a Ph.D. in Information Science from the University of Pittsburgh. My work focuses on AI agents, LLMs, and AI for wireless signal processing for healthcare tasks. I have published in IEEE journals and conferences and other reputed journals on topics such as deep learning, WiFi sensing, and contact tracing. Currently, I am developing multi-agent AI frameworks for smart home and healthcare applications.</p>
       <div class="social-icons">
-        <a href="mailto:akm88@pitt.edu" title="Email">✉️</a>
-        <a href="https://www.linkedin.com/in/akshaymadan23" target="_blank" title="LinkedIn">🔗</a>
-        <a href="https://scholar.google.com/citations?user=Dx1zfL0AAAAJ&hl=en" target="_blank" title="Google Scholar">🎓</a>
+        <a href="mailto:akm88@pitt.edu"><img id="mail-icon" src="icons/mail light.png" alt="Email"></a>
+        <a href="https://www.linkedin.com/in/akshaymadan23" target="_blank"><img id="linkedin-icon" src="icons/linkedin light.png" alt="LinkedIn"></a>
+        <a href="https://scholar.google.com/citations?user=Dx1zfL0AAAAJ&hl=en" target="_blank"><img id="scholar-icon" src="icons/scholar light.png" alt="Scholar"></a>
       </div>
     </div>
     <div class="photo">
@@ -145,30 +144,36 @@
     <h2>Selected publications</h2>
     <div id="publications-list">Loading publications...</div>
   </section>
-  <footer>© 2025 Akshay Madan. Built manually and hosted on GitHub Pages.</footer>
+  <footer>© 2025 Akshay Madan.</footer>
   <script>
     // Theme toggle
-    const toggle = document.getElementById('toggle-theme');
-    toggle.addEventListener('click', () => {
-      document.body.classList.toggle('dark');
-      toggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+    const themeIcon = document.getElementById('theme-icon');
+    const mailIcon = document.getElementById('mail-icon');
+    const linkedinIcon = document.getElementById('linkedin-icon');
+    const scholarIcon = document.getElementById('scholar-icon');
+    themeIcon.addEventListener('click', () => {
+      const dark = document.body.classList.toggle('dark');
+      themeIcon.src = dark ? 'icons/sun light.png' : 'icons/moon dark.png';
+      mailIcon.src = dark ? 'icons/mail dark.png' : 'icons/mail light.png';
+      linkedinIcon.src = dark ? 'icons/linkedin dark.png' : 'icons/linkedin light.png';
+      scholarIcon.src = dark ? 'icons/scholar dark.png' : 'icons/scholar light.png';
     });
     // Load bib files via GitHub API
     async function listBibFiles() {
       const list = document.getElementById('publications-list'); list.innerHTML = '';
       try {
-        // Customize these for your GitHub
-        const user = 'YOUR_USERNAME';
-        const repo = 'YOUR_REPO';
+        const user = 'akshay-madan';
+        const repo = 'akshay-madan.github.io';
         const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/publications`;
         const res = await fetch(apiUrl);
+        if (!res.ok) throw new Error();
         const files = await res.json();
         const bibFiles = files.filter(f => f.name.endsWith('.bib'));
         for (const file of bibFiles) {
           const bibRes = await fetch(file.download_url);
           const content = await bibRes.text();
           const entry = content.split(/@article|@inproceedings/)[1] || '';
-          const getField = (field) => (entry.match(new RegExp(field + '\\s*=\\s*[{\\"](.+?)[}\\"]', 'i')) || [])[1] || '';
+          const getField = f => (entry.match(new RegExp(f + '\\s*=\\s*[{\\"](.+?)[}\\"]', 'i')) || [])[1] || '';
           const title = getField('title');
           const authors = getField('author');
           const year = getField('year');
@@ -183,7 +188,7 @@
               </div>`;
           }
         }
-      } catch (err) {
+      } catch {
         document.getElementById('publications-list').innerText = 'Failed to load publications.';
       }
     }
