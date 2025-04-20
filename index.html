@@ -178,33 +178,45 @@
     });
 
     async function listBibFiles() {
-      const list = document.getElementById('publications-list'); list.innerHTML = '';
+      const list = document.getElementById('publications-list');
+      list.innerHTML = '';
       try {
         const user = 'akshay-madan'; const repo = 'akshay-madan.github.io';
-        const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/publications`);
+        const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/publications`;
+        const res = await fetch(apiUrl);
         if (!res.ok) throw new Error();
         const files = await res.json();
         const bibFiles = files
           .filter(f => f.name.toLowerCase().endsWith('.bib'))
-          .sort((a,b) => b.name.localeCompare(a.name));
+          .sort((a, b) => b.name.localeCompare(a.name));
         for (const file of bibFiles) {
-          const bRes = await fetch(file.download_url);
-          const content = await bRes.text();
-          const entry = content.split(/@(article|inproceedings)/i)[1] || '';
-          const getField = f => (entry.match(new RegExp(f + '\\s*=\\s*[{\\"](.+?)[}\\"]','i')) || [])[1] || '';
-          const title = getField('title'); const authors = getField('author'); const year = getField('year');
-          const venue = getField('journal') || getField('booktitle'); const url = getField('url');
-          if (title && authors) {
-            list.innerHTML += `
-              <div class="paper">
-                <div class="paper-title">${title}</div>
-                <div class="paper-authors">${authors}</div>
-                <div class="paper-venue">${venue ? venue + ', ' : ''}${year}</div>
-                <div class="paper-buttons">
-                  ${url ? `<a href="${url}" target="_blank"><img src="icons/webpage light.png" alt="Webpage"></a>` : ''}
-                </div>
-              </div>`;
-          }
+          const bibRes = await fetch(file.download_url);
+          if (!bibRes.ok) continue;
+          const content = await bibRes.text();
+          // Split without capturing group to get all entries
+          const entries = content.split(/@(?:article|inproceedings)/i).slice(1);
+          entries.forEach(entry => {
+            const getField = f => {
+              const match = entry.match(new RegExp(f + '\s*=\s*[{\"](.+?)[}\"]', 'i'));
+              return match ? match[1] : '';
+            };
+            const title = getField('title');
+            const authors = getField('author');
+            const year = getField('year');
+            const venue = getField('journal') || getField('booktitle');
+            const url = getField('url');
+            if (title && authors) {
+              list.innerHTML += `
+                <div class="paper">
+                  <div class="paper-title">${title}</div>
+                  <div class="paper-authors">${authors}</div>
+                  <div class="paper-venue">${venue ? venue + ', ' : ''}${year}</div>
+                  <div class="paper-buttons">
+                    ${url ? `<a href="${url}" target="_blank"><img src="icons/webpage light.png" alt="Webpage"></a>` : ''}
+                  </div>
+                </div>`;
+            }
+          });
         }
       } catch {
         document.getElementById('publications-list').innerText = 'Failed to load publications.';
