@@ -21,7 +21,7 @@
       --hover-color: #00bcd4;
       --border-color: #444;
     }
-    * { box-sizing: border-box; transition: background-color .2s ease, color .2s ease, border-color .2s ease; }
+    * { box-sizing: border-box; transition: background-color .1s ease, color .1s ease, border-color .1s ease; }
     body {
       font-family: 'Roboto', sans-serif;
       font-size: 16px;
@@ -40,7 +40,7 @@
     }
     nav a {
       font-family: inherit;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 300;
       color: var(--text-color);
       margin-left: 20px;
@@ -180,8 +180,7 @@
     async function listBibFiles() {
       const list = document.getElementById('publications-list'); list.innerHTML = '';
       try {
-        const user = 'akshay-madan';
-        const repo = 'akshay-madan.github.io';
+        const user = 'akshay-madan'; const repo = 'akshay-madan.github.io';
         const res = await fetch(`https://api.github.com/repos/${user}/${repo}/contents/publications`);
         if (!res.ok) throw new Error();
         const files = await res.json();
