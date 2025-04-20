@@ -6,79 +6,52 @@
   <title>Akshay Madan | GenAI Researcher</title>
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="icon.png" type="image/png">
-  <script defer src="bibtexParser.js"></script>
-</head>
-<body>
-  <header>
-    <img src="photo.jpg" alt="Akshay Madan" class="profile-pic">
-    <h1>Akshay Madan</h1>
-    <p>Generative AI Researcher</p>
-  </header>
-
-  <section id="about">
-    <h2>About Me</h2>
-    <p>I am a Generative AI researcher with a Ph.D. in Information Science from the University of Pittsburgh. My work focuses on AI agents, LLMs, and AI for wireless signal processing for healthcare tasks. I have published in IEEE journals and conferences and other reputed journals on topics such as deep learning, WiFi sensing, and contact tracing. Currently, I am developing multi-agent AI frameworks for smart home and healthcare applications.</p>
-  </section>
-
-  <section id="education">
-    <h2>Education</h2>
-    <ul>
-      <li>Ph.D. in Information Science – University of Pittsburgh, 2024</li>
-      <li>M.Eng. in Communication Engineering – BITS Pilani, 2018</li>
-      <li>B.Eng. in Electrical and Electronics Engineering – BITS Pilani, 2016</li>
-    </ul>
-  </section>
-
-  <section id="projects">
-    <h2>Projects</h2>
-    <ul>
-      <li>CAPA-Agent: Context-Aware AI Agent for Smart Home & Healthcare</li>
-      <li>LLM-based Code Evaluation for Educational Assessment</li>
-      <li>Multi-Agent Systems for Scientific Knowledge Discovery</li>
-      <li>AI for Hand Hygiene Monitoring using WiFi CSI</li>
-    </ul>
-  </section>
-
-  <section id="publications">
-    <h2>Publications</h2>
-    <div id="publications-list">Loading from BibTeX...</div>
-  </section>
-
-  <section id="CV">
-    <h2>Curriculum Vitae</h2>
-    <a href="Akshay Madan CV.pdf" download>Download CV</a>
-  </section>
-
-  <footer>
-    <p>Contact: akm88@pitt.edu | © 2025 Akshay Madan</p>
-  </footer>
-
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      line-height: 1.6;
-      background-color: #f9f9f9;
-      color: #333;
+      background: #f0f0f0;
+      display: flex;
     }
-    header {
+    nav {
+      width: 220px;
       background: #2d2d2d;
       color: #fff;
+      min-height: 100vh;
       padding: 20px;
-      text-align: center;
+      box-sizing: border-box;
+    }
+    nav h1 {
+      font-size: 20px;
+      margin-bottom: 20px;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+    }
+    nav ul li {
+      margin: 10px 0;
+    }
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+    }
+    main {
+      flex: 1;
+      padding: 30px;
+      background: #fff;
     }
     .profile-pic {
-      width: 150px;
-      height: 150px;
+      width: 120px;
+      height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      margin-bottom: 10px;
+      display: block;
+      margin-bottom: 15px;
     }
     section {
-      max-width: 800px;
-      margin: 20px auto;
-      padding: 0 20px;
+      margin-bottom: 40px;
     }
     h2 {
       border-bottom: 2px solid #ccc;
@@ -91,26 +64,88 @@
       font-size: 0.9em;
     }
   </style>
+</head>
+<body>
+  <nav>
+    <img src="photo.jpg" alt="Akshay Madan" class="profile-pic">
+    <h1>Akshay Madan</h1>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#cv">CV</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="about">
+      <h2>About Me</h2>
+      <p>I am a Generative AI researcher with a Ph.D. in Information Science from the University of Pittsburgh. My work focuses on AI agents, LLMs, and AI for wireless signal processing for healthcare tasks. I have published in IEEE journals and conferences and other reputed journals on topics such as deep learning, WiFi sensing, and contact tracing. Currently, I am developing multi-agent AI frameworks for smart home and healthcare applications.</p>
+    </section>
+
+    <section id="education">
+      <h2>Education</h2>
+      <ul>
+        <li>Ph.D. in Information Science – University of Pittsburgh, 2024</li>
+        <li>M.Eng. in Communication Engineering – BITS Pilani, 2018</li>
+        <li>B.Eng. in Electrical and Electronics Engineering – BITS Pilani, 2016</li>
+      </ul>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <ul>
+        <li>CAPA-Agent: Context-Aware AI Agent for Smart Home & Healthcare</li>
+        <li>LLM-based Code Evaluation for Educational Assessment</li>
+        <li>Multi-Agent Systems for Scientific Knowledge Discovery</li>
+        <li>AI for Hand Hygiene Monitoring using WiFi CSI</li>
+      </ul>
+    </section>
+
+    <section id="publications">
+      <h2>Publications</h2>
+      <div id="publications-list">Loading from BibTeX...</div>
+    </section>
+
+    <section id="cv">
+      <h2>Curriculum Vitae</h2>
+      <a href="Akshay_Madan_CV.pdf" download>Download CV</a>
+    </section>
+
+    <footer>
+      <p>Contact: akm88@pitt.edu | © 2025 Akshay Madan</p>
+    </footer>
+  </main>
 
   <script>
-    async function loadBibTeX() {
-      const res = await fetch('publications/sample.bib');
-      const text = await res.text();
-      const entries = text.split(/@article|@inproceedings/).slice(1);
+    async function loadAllBibFiles() {
       const list = document.getElementById('publications-list');
-      list.innerHTML = '';
-      entries.forEach(entry => {
-        const title = (entry.match(/title\s*=\s*[{\"](.+?)[}\"]/i) || [])[1];
-        const author = (entry.match(/author\s*=\s*[{\"](.+?)[}\"]/i) || [])[1];
-        const year = (entry.match(/year\s*=\s*[{\"](.+?)[}\"]/i) || [])[1];
-        if (title && author && year) {
-          const item = document.createElement('p');
-          item.innerHTML = `<strong>${title}</strong><br><em>${author}</em> (${year})`;
-          list.appendChild(item);
+      try {
+        const indexRes = await fetch('publications/index.json');
+        const bibFiles = await indexRes.json();
+
+        for (const file of bibFiles) {
+          const res = await fetch(`publications/${file}`);
+          if (!res.ok) continue;
+          const text = await res.text();
+          const entries = text.split(/@article|@inproceedings/).slice(1);
+          entries.forEach(entry => {
+            const title = (entry.match(/title\s*=\s*[{"](.+?)[}\"]/i) || [])[1];
+            const author = (entry.match(/author\s*=\s*[{"](.+?)[}\"]/i) || [])[1];
+            const year = (entry.match(/year\s*=\s*[{"](.+?)[}\"]/i) || [])[1];
+            if (title && author && year) {
+              const item = document.createElement('p');
+              item.innerHTML = `<strong>${title}</strong><br><em>${author}</em> (${year})`;
+              list.appendChild(item);
+            }
+          });
         }
-      });
+      } catch (e) {
+        list.innerText = 'Failed to load BibTeX files. Ensure publications/index.json exists.';
+      }
     }
-    loadBibTeX();
+    loadAllBibFiles();
   </script>
 </body>
 </html>
