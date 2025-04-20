@@ -29,7 +29,7 @@
       margin: 0;
       background-color: var(--bg-color);
       color: var(--text-color);
-      padding-bottom: 60px; /* space for footer */
+      padding-bottom: 60px;
     }
     nav {
       background-color: var(--nav-bg);
@@ -48,8 +48,8 @@
     #theme-icon {
       margin-left: 20px;
       cursor: pointer;
-      width: 45px;
-      height: 45px;
+      width: 20px;
+      height: 20px;
     }
     .container {
       max-width: 960px;
@@ -77,8 +77,8 @@
       display: inline-block;
     }
     .social-icons img {
-      width: 50px;
-      height: 50px;
+      width: 40px;
+      height: 40px;
     }
     .photo {
       flex: 1;
@@ -90,10 +90,19 @@
       object-fit: cover;
       border-radius: 50%;
     }
+    hr {
+      border: none;
+      border-top: 1px solid var(--border-color);
+      margin: 60px 0 40px;
+    }
     #publications {
       max-width: 960px;
-      margin: 20px auto;
+      margin: 0 auto;
       padding: 0 20px;
+    }
+    #publications h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
     }
     .paper {
       margin-bottom: 30px;
@@ -102,12 +111,12 @@
       font-size: 16px;
       line-height: 1.6;
     }
-    .paper-title { font-weight: 700; }
-    .paper-authors, .paper-venue { font-weight: 400; }
-    .paper-venue { font-style: italic; margin: 5px 0 8px; }
-    .paper-buttons a img {
-      width: 50px;
-      height: 50px;
+    .paper-title { font-weight: 700; font-size: 18px; margin-bottom: 5px; }
+    .paper-authors, .paper-venue { font-weight: 400; margin: 5px 0; }
+    .paper-venue { font-style: italic; }
+    .paper-buttons img {
+      width: 40px;
+      height: 40px;
       vertical-align: middle;
     }
     footer {
@@ -144,8 +153,9 @@
       <img src="photo.jpg" alt="Akshay Madan">
     </div>
   </div>
+  <hr>
   <section id="publications">
-    <h2>Selected publications</h2>
+    <h2>Publications</h2>
     <div id="publications-list">Loading publications...</div>
   </section>
   <footer>© 2025 Akshay Madan. Built manually and hosted on GitHub Pages.</footer>
@@ -172,7 +182,7 @@
         const res = await fetch(apiUrl);
         if (!res.ok) throw new Error();
         const files = await res.json();
-        const bibFiles = files.filter(f => f.name.endsWith('.bib'));
+        const bibFiles = files.filter(f => f.name.endsWith('.bib')).sort((a,b)=> b.name.localeCompare(a.name));
         for (const file of bibFiles) {
           const bibRes = await fetch(file.download_url);
           const content = await bibRes.text();
