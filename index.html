@@ -7,7 +7,6 @@
   <link rel="icon" href="icon.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
   <style>
-    /* Theme variables */
     :root {
       --bg-color: #ffffff;
       --text-color: #1e1e1e;
@@ -24,141 +23,45 @@
       --link-color: #00bcd4;
       --border-color: #444;
     }
-
-    /* Transitions */
-    * {
-      box-sizing: border-box;
-      transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease;
-    }
-    body {
-      font-family: 'Roboto', sans-serif;
-      margin: 0;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      padding-bottom: 60px;
-    }
-    nav {
-      background-color: var(--nav-bg);
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      padding: 10px 20px;
-      font-size: 14px;
-    }
-    nav a {
-      color: var(--text-color);
-      margin-left: 20px;
-      text-decoration: none;
-    }
+    * { box-sizing: border-box; transition: background-color .5s, color .5s, border-color .5s; }
+    body { font-family: 'Roboto', sans-serif; margin: 0; background: var(--bg-color); color: var(--text-color); padding-bottom: 60px; }
+    nav { background: var(--nav-bg); display: flex; justify-content: flex-end; align-items: center; padding: 10px 20px; font-size: 14px; }
+    nav a { color: var(--text-color); margin-left: 20px; text-decoration: none; }
     nav a:hover { color: var(--hover-color); }
-    #theme-icon {
-      margin-left: 20px;
-      cursor: pointer;
-      width: 20px;
-      height: 20px;
-    }
-    .container {
-      max-width: 960px;
-      margin: 40px auto;
-      padding: 0 20px;
-      display: flex;
-      gap: 40px;
-    }
-    .profile {
-      flex: 2;
-    }
-    .profile h1 {
-      font-size: 32px;
-      margin: 0;
-      line-height: 1.2;
-    }
-    .profile p {
-      font-size: 16px;
-      font-weight: 300;
-      line-height: 1.6;
-      margin: 10px 0;
-    }
-    .social-icons a {
-      margin-right: 15px;
-      display: inline-block;
-    }
-    .social-icons img {
-      width: 40px;
-      height: 40px;
-    }
-    .photo {
-      flex: 1;
-      text-align: center;
-    }
-    .photo img {
-      width: 240px;
-      height: 240px;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-    /* Section separator */
-    hr {
-      width: 960px;
-      max-width: calc(100% - 40px);
-      margin: 60px auto 40px;
-      border: none;
-      border-top: 3px double var(--border-color);
-      transition: border-color 0.5s ease;
-    }
-    /* Publications section */
-    #publications {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-    #publications h2 {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-    .paper {
-      margin-bottom: 30px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border-color);
-      font-size: 16px;
-      line-height: 1.6;
-    }
-    .paper-title {
-      font-weight: 700;
-      font-size: 22px; /* Larger titles */
-      margin-bottom: 5px;
-    }
-    .paper-authors, .paper-venue {
-      font-weight: 400;
-      margin: 5px 0;
-    }
+    #theme-icon { margin-left: 20px; cursor: pointer; width: 20px; height: 20px; }
+    .container { max-width: 960px; margin: 40px auto; padding: 0 20px; display: flex; gap: 40px; }
+    .profile { flex: 2; }
+    .profile h1 { font-size: 32px; margin: 0; line-height: 1.2; }
+    .profile p { font-size: 16px; font-weight: 300; line-height: 1.6; margin: 10px 0; }
+    .social-icons a { margin-right: 15px; display: inline-block; }
+    .social-icons img { width: 40px; height: 40px; }
+    .photo { flex: 1; text-align: center; }
+    .photo img { width: 240px; height: 240px; object-fit: cover; border-radius: 50%; }
+    hr { width: 960px; max-width: calc(100% - 40px); margin: 60px auto 40px; border: none; border-top: 3px double var(--border-color); }
+    section { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+    section h2 { font-size: 24px; margin-bottom: 20px; }
+    .list { font-size: 16px; line-height: 1.6; }
+    .list li { margin-bottom: 10px; }
+    .paper { margin-bottom: 30px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); font-size: 16px; line-height: 1.6; }
+    .paper-title { font-weight: 700; font-size: 22px; margin-bottom: 5px; }
+    .paper-authors, .paper-venue { font-weight: 400; margin: 5px 0; }
     .paper-venue { font-style: italic; }
-    .paper-buttons img {
-      width: 40px;
-      height: 40px;
-      vertical-align: middle;
-    }
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background-color: var(--nav-bg);
-      text-align: center;
-      padding: 10px;
-      font-size: 12px;
-      color: var(--text-color);
-    }
+    .paper-buttons img { width: 40px; height: 40px; vertical-align: middle; }
+    footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--nav-bg); text-align: center; padding: 10px; font-size: 12px; color: var(--text-color); }
   </style>
 </head>
 <body>
   <nav>
-    <a href="#">About</a>
+    <a href="#bio">Bio</a>
+    <a href="#projects">Major Projects</a>
+    <a href="#inprogress">Papers in Progress</a>
     <a href="#publications">Publications</a>
     <a href="Akshay_Madan_CV.pdf" download>CV</a>
     <img id="theme-icon" src="icons/moon dark.png" alt="Toggle theme">
   </nav>
 
-  <div class="container">
+  <!-- Bio -->
+  <div id="bio" class="container">
     <div class="profile">
       <h1><strong>Akshay</strong> Madan</h1>
       <p>I am a Generative AI researcher with a Ph.D. in Information Science from the University of Pittsburgh. My work focuses on AI agents, LLMs, and AI for wireless signal processing for healthcare tasks. I have published in IEEE journals and conferences and other reputed journals on topics such as deep learning, WiFi sensing, and contact tracing. Currently, I am developing multi-agent AI frameworks for smart home and healthcare applications.</p>
@@ -172,9 +75,31 @@
       <img src="photo.jpg" alt="Akshay Madan">
     </div>
   </div>
-
   <hr>
 
+  <!-- Major Projects -->
+  <section id="projects">
+    <h2>Major Projects</h2>
+    <ul class="list">
+      <li>Context-Aware Proactive AI Multi-Agent for Personalized Smart Home and Smart Healthcare Applications</li>
+      <li>LLM-based code evaluation techniques focused on educational assessment and semantic understanding</li>
+      <li>Multi-Agent systems for scientific research and knowledge discovery</li>
+      <li>AI-based Signal Processing for Hand Hygiene Monitoring in Healthcare Facilities</li>
+    </ul>
+  </section>
+  <hr>
+
+  <!-- Papers in Progress -->
+  <section id="inprogress">
+    <h2>Papers in Progress</h2>
+    <ul class="list">
+      <li><strong>Akshay Madan</strong>, “CAPA-Agent: A Context-Aware Proactive AI Agent for Personalized Smart Home and Healthcare Applications using Reasoning LLMs”</li>
+      <li><strong>Akshay Madan</strong>, Dhruv Kumar, “Survey of Code Evaluation LLMs for Educational Assessment and Semantic Understanding”</li>
+    </ul>
+  </section>
+  <hr>
+
+  <!-- Publications -->
   <section id="publications">
     <h2>Publications</h2>
     <div id="publications-list">Loading publications...</div>
@@ -183,7 +108,6 @@
   <footer>© 2025 Akshay Madan. Built manually and hosted on GitHub Pages.</footer>
 
   <script>
-    // Theme toggle
     const themeIcon = document.getElementById('theme-icon');
     const mailIcon = document.getElementById('mail-icon');
     const linkedinIcon = document.getElementById('linkedin-icon');
@@ -196,40 +120,33 @@
       scholarIcon.src = dark ? 'icons/scholar dark.png' : 'icons/scholar light.png';
     });
 
-    // Load bib files via GitHub API
     async function listBibFiles() {
-      const list = document.getElementById('publications-list');
-      list.innerHTML = '';
+      const list = document.getElementById('publications-list'); list.innerHTML = '';
       try {
-        const user = 'akshay-madan';
-        const repo = 'akshay-madan.github.io';
+        const user = 'YOUR_USERNAME';
+        const repo = 'YOUR_REPO';
         const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/publications`;
         const res = await fetch(apiUrl);
         if (!res.ok) throw new Error();
         const files = await res.json();
-        // Case-insensitive .bib and reverse order
-        const bibFiles = files
-          .filter(f => f.name.toLowerCase().endsWith('.bib'))
-          .sort((a, b) => b.name.localeCompare(a.name));
-
+        const bibFiles = files.filter(f => f.name.toLowerCase().endsWith('.bib')).sort((a,b)=>b.name.localeCompare(a.name));
         for (const file of bibFiles) {
           const bibRes = await fetch(file.download_url);
           const content = await bibRes.text();
           const entry = content.split(/@article|@inproceedings/)[1] || '';
-          const getField = f => (entry.match(new RegExp(f + '\\s*=\\s*[{\\"](.+?)[}\\"]', 'i')) || [])[1] || '';
+          const getField = f => (entry.match(new RegExp(f+'\\s*=\\s*[{\\"](.+?)[}\\"]','i'))||[])[1] || '';
           const title = getField('title');
           const authors = getField('author');
           const year = getField('year');
-          const venue = getField('journal') || getField('booktitle');
+          const venue = getField('journal')||getField('booktitle');
           const url = getField('url');
-
           if (title && authors) {
             list.innerHTML += `
               <div class="paper">
                 <div class="paper-title">${title}</div>
                 <div class="paper-authors">${authors}</div>
-                <div class="paper-venue">${venue ? venue + ', ' : ''}${year}</div>
-                <div class="paper-buttons">${url ? `<a href="${url}" target="_blank"><img src="icons/webpage light.png" alt="Webpage"></a>` : ''}</div>
+                <div class="paper-venue">${venue?venue+', ':''}${year}</div>
+                <div class="paper-buttons">${url?`<a href="${url}" target="_blank"><img src="icons/webpage light.png" alt="Webpage"></a>`:''}</div>
               </div>`;
           }
         }
