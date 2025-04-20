@@ -186,73 +186,109 @@
   <footer>© 2025 Akshay Madan. Built manually and hosted on GitHub Pages.</footer>
 
   <script>
-    // Theme toggle
-    const themeIcon = document.getElementById('theme-icon');
-    const mailIcon = document.getElementById('mail-icon');
-    const linkedinIcon = document.getElementById('linkedin-icon');
-    const scholarIcon = document.getElementById('scholar-icon');
-    themeIcon.addEventListener('click', () => {
-      const dark = document.body.classList.toggle('dark');
-      themeIcon.src     = dark ? 'icons/sun light.png'    : 'icons/moon dark.png';
-      mailIcon.src      = dark ? 'icons/mail dark.png'   : 'icons/mail light.png';
-      linkedinIcon.src  = dark ? 'icons/linkedin dark.png' : 'icons/linkedin light.png';
-      scholarIcon.src   = dark ? 'icons/scholar dark.png' : 'icons/scholar light.png';
-      // Update webpage icons
-      document.querySelectorAll('.paper-buttons img').forEach(img => {
-        img.src = dark ? 'icons/webpage dark.png' : 'icons/webpage light.png';
-      });
-    });
+  // Theme toggle
+  const themeIcon    = document.getElementById('theme-icon');
+  const mailIcon     = document.getElementById('mail-icon');
+  const linkedinIcon = document.getElementById('linkedin-icon');
+  const scholarIcon  = document.getElementById('scholar-icon');
 
-    // Publications parser
-    async function listBibFiles() {
-      const list = document.getElementById('publications-list');
-      list.innerHTML = '';
-      try {
-        const user = 'akshay-madan';
-        const repo = 'akshay-madan.github.io';
-        const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/publications`;
-        const res = await fetch(apiUrl);
-        if (!res.ok) throw new Error();
-        const files = await res.json();
-        const bibFiles = files
-          .filter(f => f.name.toLowerCase().endsWith('.bib'))
-          .sort((a, b) => b.name.localeCompare(a.name));
-        for (const file of bibFiles) {
-          const bibRes = await fetch(file.download_url);
-          if (!bibRes.ok) continue;
-          const raw = await bibRes.text();
-          const entryPattern = /@(?:article|inproceedings)\s*{[^,]+,([\s\S]*?)\}\s*(?=@|$)/gi;
-          let match;
-          while ((match = entryPattern.exec(raw)) !== null) {
-            const block = match[1];
-            const getField = field => {
-              const rx = new RegExp(`${field}\\s*=\\s*[{\"]([^}\"]+)[}\"]`, 'i');
-              const m = rx.exec(block);
-              return m ? m[1].trim() : '';
-            };
-            const title   = getField('title');
-            const authors = getField('author');
-            const year    = getField('year');
-            const venue   = getField('journal') || getField('booktitle');
-            const url     = getField('url');
-            if (title && authors) {
-              list.innerHTML += `
-                <div class="paper">
-                  <div class="paper-title">${title}</div>
-                  <div class="paper-authors">${authors}</div>
-                  <div class="paper-venue">${venue ? venue + ', ' : ''}${year}</div>
-                  <div class="paper-buttons">
-                    ${url ? `<a href="${url}" target="_blank"><img src="icons/webpage light.png" alt="Webpage"></a>` : ''}
-                  </div>
-                </div>`;
-            }
+  themeIcon.addEventListener('click', () => {
+    const dark = document.body.classList.toggle('dark');
+    themeIcon.src     = dark ? 'icons/sun light.png'    : 'icons/moon dark.png';
+    mailIcon.src      = dark ? 'icons/mail dark.png'   : 'icons/mail light.png';
+    linkedinIcon.src  = dark ? 'icons/linkedin dark.png': 'icons/linkedin light.png';
+    scholarIcon.src   = dark ? 'icons/scholar dark.png' : 'icons/scholar light.png';
+    // also swap webpage icons under each paper
+    document.querySelectorAll('.paper-buttons img').forEach(img =>
+      img.src = dark ? 'icons/webpage dark.png' : 'icons/webpage light.png'
+    );
+  });
+
+  // Publications parser
+  async function listBibFiles() {
+    const list = document.getElementById('publications-list');
+    list.innerHTML = ''; 
+    console.log('▶️ Starting publications load…');
+
+    try {
+      const user = 'akshay-madan';
+      const repo = 'akshay-madan.github.io';
+      const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/publications`;
+      console.log('Fetching file list from', apiUrl);
+      const res = await fetch(apiUrl);
+      console.log('GitHub API status', res.status);
+      if (!res.ok) throw new Error(`GitHub API returned ${res.status}`);
+
+      const files = await res.json();
+      console.log('Files in folder:', files.map(f=>f.name));
+      const bibFiles = files
+        .filter(f => f.name.toLowerCase().endsWith('.bib'))
+        .sort((a, b) => b.name.localeCompare(a.name));
+      if (!bibFiles.length) {
+        list.innerText = 'No .bib files found.';
+        return;
+      }
+
+      for (const file of bibFiles) {
+        console.log('Loading', file.name);
+        const bibRes = await fetch(file.download_url);
+        if (!bibRes.ok) {
+          console.warn('Failed to fetch', file.name);
+          continue;
+        }
+        const raw = await bibRes.text();
+
+        // Match inner block of each entry
+        const entryPattern = /@(?:article|inproceedings)\s*{[^,]+,([\s\S]*?)\}\s*(?=@|$)/gi;
+        let match;
+        while ((match = entryPattern.exec(raw)) !== null) {
+          const block = match[1];
+
+          const getField = field => {
+            const rx = new RegExp(
+              field + '\\s*=\\s*[{"]([\\s\\S]*?)[}"]',
+              'i'
+            );
+            const m = rx.exec(block);
+            return m ? m[1].replace(/\s+/g, ' ').trim() : '';
+          };
+
+          const title   = getField('title');
+          const authors = getField('author');
+          const year    = getField('year');
+          const venue   = getField('journal') || getField('booktitle');
+          const url     = getField('url');
+
+          if (title && authors) {
+            const iconSrc = document.body.classList.contains('dark')
+              ? 'icons/webpage dark.png'
+              : 'icons/webpage light.png';
+
+            list.insertAdjacentHTML('beforeend', `
+              <div class="paper">
+                <div class="paper-title">${title}</div>
+                <div class="paper-authors">${authors}</div>
+                <div class="paper-venue">${venue ? venue + ', ' : ''}${year}</div>
+                <div class="paper-buttons">
+                  ${url
+                    ? `<a href="${url}" target="_blank">
+                         <img src="${iconSrc}" width="20" height="20" alt="Webpage">
+                       </a>`
+                    : ''}
+                </div>
+              </div>`);
           }
         }
-      } catch (err) {\n        document.getElementById('publications-list').innerText = 'Failed to load publications.';
-        console.error(err);
       }
+      console.log('✅ Publications loaded.');
+    } catch (err) {
+      console.error('Error loading publications:', err);
+      list.innerText = 'Error loading publications: ' + err.message;
     }
-    document.addEventListener('DOMContentLoaded', listBibFiles);
-  </script>
+  }
+
+  // Run after DOM ready
+  document.addEventListener('DOMContentLoaded', listBibFiles);
+</script>
 </body>
 </html>
