@@ -1,3 +1,4 @@
 # akshay-madan.github.io
-Professioal Webpage
+Professional Webpage
+
 [akshay-madan.github.io](https://akshay-madan.github.io)
