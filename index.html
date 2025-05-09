@@ -145,7 +145,16 @@
   <div id="bio" class="container">
     <div class="profile">
       <h1><strong>Akshay</strong> Madan</h1>
-      <p>I am a Generative AI researcher with a Ph.D. in Information Science from the University of Pittsburgh. My work focuses on AI agents, LLMs, and AI for wireless signal processing for healthcare tasks. I have published in IEEE journals and conferences and other reputed journals on topics such as deep learning, WiFi sensing, and contact tracing. Currently, I am developing multi-agent AI frameworks for smart home and healthcare applications.</p>
+      <p id="bio-text"></p>
+      <script>
+        fetch('bio.txt')
+          .then(response => response.text())
+          .then(text => {
+            const paragraphs = text.split(/\n\n+/).map(para => `<p>${para}</p>`).join('');
+            document.getElementById('bio-text').innerHTML = paragraphs;
+          })
+          .catch(err => console.error('Failed to load bio:', err));
+      </script>
       <div class="social-icons">
         <a href="mailto:akm88@pitt.edu"><img id="mail-icon" src="icons/mail light.png" alt="Email"></a>
         <a href="https://www.linkedin.com/in/akshaymadan23" target="_blank"><img id="linkedin-icon" src="icons/linkedin light.png" alt="LinkedIn"></a>
